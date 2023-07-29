@@ -1,7 +1,19 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 
-const getData = async () => {
+interface Trip {
+    title: string;
+    image: {
+        title: string;
+        url: string;
+    };
+}
+
+interface HomeProps {
+    trips: Trip[];
+}
+
+const getData = async (): Promise<Trip[]> => {
     const response = await fetch(`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master`, {
         method: 'POST',
         headers: {
@@ -43,17 +55,13 @@ const getData = async () => {
     /**
      query {
       tripCollection {
-        __typename
         items {
-          __typename
           title
           image {
-            __typename
             title
             url
           }
           destination {
-            __typename
             lon
             lat
           }
@@ -63,7 +71,7 @@ const getData = async () => {
      */
 }
 
-export default async function Home({trips}) {
+export default async function Home({trips}): HomeProps {
     const data = await getData();
 
     console.log('Data:', JSON.stringify(data, null, 2));
