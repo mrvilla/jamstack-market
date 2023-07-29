@@ -10,7 +10,7 @@ interface Trip {
 }
 
 interface HomeProps {
-    trips: Trip[];
+    data: Trip[];
 }
 
 const getData = async (): Promise<Trip[]> => {
@@ -71,7 +71,7 @@ const getData = async (): Promise<Trip[]> => {
      */
 }
 
-export default async function Home({trips}): HomeProps {
+export default async function Home(): Promise<JSX.Element> {
     const data = await getData();
 
     console.log('Data:', JSON.stringify(data, null, 2));
@@ -83,7 +83,7 @@ export default async function Home({trips}): HomeProps {
         </h1>
         <div>
             {data.map((item) => (
-                <>
+                <div key={item.title}>
                     <h4>{item.title}</h4>
                     <Image
                         src={item.image.url}
@@ -92,10 +92,10 @@ export default async function Home({trips}): HomeProps {
                         height={422}
                         priority
                     />
-s                </>
+                </div>
             ))}
         </div>
     </main>
-  )
+  );
 }
 
